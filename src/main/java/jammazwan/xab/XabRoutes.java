@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class XabRoutes extends RouteBuilder {
 
-    @Autowired
-    private XabBean xabBean;
-    @Autowired
-    private XabProcessor xabProcessor;
+    
+    @Autowired private XabProcessor xabProcessor;
 
     @Override
     public void configure() throws Exception {
@@ -19,7 +17,7 @@ public class XabRoutes extends RouteBuilder {
             .process(new Processor() {
                 public void process(Exchange exchange) throws Exception {
                     String text = exchange.getIn().getBody(String.class);
-                    String newAnswer = xabBean.answer(text);
+                    String newAnswer = "My " + text;
                     exchange.getOut().setBody(newAnswer);
                 }
             });
