@@ -6,15 +6,21 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
-	
-	<context:component-scan base-package="jammazwan.xab" />
-    
-    <bean id="xabProcessor" class="jammazwan.xab.XabProcessor"/>
-    
-    <bean id="xabRoutes" class="jammazwan.xab.XabRoutes"/>
 
-    <camelContext id="xab" xmlns="http://camel.apache.org/schema/spring">
-        <routeBuilder ref="xabRoutes"/>
-    </camelContext>
+	<import resource="classpath:META-INF/spring/camel-jpa-context.xml" />
+	<bean id="xabRoutes" class="jammazwan.xab.XabRoutes" />
 
+	<camelContext id="loader" xmlns="http://camel.apache.org/schema/spring">
+		<routeBuilder ref="xabRoutes" />
+		<dataFormats>
+			<bindy id="cityDataFormat" type="Csv" classType="jammazwan.entity.City" />
+			<bindy id="surnameDataFormat" type="Csv" classType="jammazwan.entity.Surname" />
+			<bindy id="nameDataFormat" type="Csv" classType="jammazwan.entity.Name" />
+			<bindy id="companyDataFormat" type="Csv" classType="jammazwan.entity.Company" />
+			<bindy id="countryCategoryDataFormat" type="Csv"
+				classType="jammazwan.entity.CountryCategory" />
+			<bindy id="countryCodeDataFormat" type="Csv"
+				classType="jammazwan.entity.CountryCode" />
+		</dataFormats>
+	</camelContext>
 </beans>

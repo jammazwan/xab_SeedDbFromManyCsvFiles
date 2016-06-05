@@ -1,25 +1,27 @@
 package jammazwan.xab;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 public class XabRoutes extends RouteBuilder {
 
-    
-    @Autowired private XabProcessor xabProcessor;
+	@Override
+	public void configure() throws Exception {
+		from("file:../jammazwan.shared/src/main/resources/data/?noop=true&fileName=city.csv")
+				.unmarshal("cityDataFormat").split(body()).to("jpa:jammazwan.entity.City");
 
-    @Override
-    public void configure() throws Exception {
-        from("direct:xab")
-            .process(new Processor() {
-                public void process(Exchange exchange) throws Exception {
-                    String text = exchange.getIn().getBody(String.class);
-                    String newAnswer = "My " + text;
-                    exchange.getOut().setBody(newAnswer);
-                }
-            });
-    }
+		from("file:../jammazwan.shared/src/main/resources/data/?noop=true&fileName=company.csv")
+				.unmarshal("companyDataFormat").split(body()).to("jpa:jammazwan.entity.Company");
+
+		from("file:../jammazwan.shared/src/main/resources/data/?noop=true&fileName=surname.txt")
+				.unmarshal("surnameDataFormat").split(body()).to("jpa:jammazwan.entity.Surname");
+
+		from("file:../jammazwan.shared/src/main/resources/data/?noop=true&fileName=name.csv")
+				.unmarshal("nameDataFormat").split(body()).to("jpa:jammazwan.entity.Name");
+
+		from("file:../jammazwan.shared/src/main/resources/data/factbook_csv/?noop=true&fileName=category.csv")
+				.unmarshal("countryCategoryDataFormat").split(body()).to("jpa:jammazwan.entity.CountryCategory");
+
+		from("file:../jammazwan.shared/src/main/resources/data/factbook_csv/?noop=true&fileName=code.csv")
+				.unmarshal("countryCodeDataFormat").split(body()).to("jpa:jammazwan.entity.CountryCode");
+	}
 }

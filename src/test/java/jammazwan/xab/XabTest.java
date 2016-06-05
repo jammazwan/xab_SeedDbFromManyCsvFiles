@@ -5,17 +5,18 @@ import org.junit.Test;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import jammazwan.util.HoldContextOpenUntilDone;
+
 public class XabTest extends CamelSpringTestSupport {
 
-    @Override
-    protected AbstractXmlApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext("META-INF/spring/camel-context.xml");
-    }
+	@Override
+	protected AbstractXmlApplicationContext createApplicationContext() {
+		return new ClassPathXmlApplicationContext("META-INF/spring/camel-context.xml");
+	}
 
-    @Test
-    public void testHelloBean() throws Exception {
-        String reply = template.requestBody("direct:xab", "No Meaning Here", String.class);
-		assertEquals("My No Meaning Here", reply);
-    }
+	@Test
+	public void test() throws Exception {
+		HoldContextOpenUntilDone.go(context);
+	}
 
 }
